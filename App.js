@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, TextInput, Text, View, Button, Alert, ActivityIndicator, Picker, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, Text, View, Button, Alert, ActivityIndicator, Picker, TouchableOpacity, ImageBackground,Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -49,11 +49,13 @@ class LogInScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
+    <ImageBackground source={require ('./eurovision_turkey_fan_page_background_by_alisarikaya-d56oqze.jpg')} style={styles.backgroundImage}>
       <ScrollView style={{padding: 30}}>
                 <Text
-                    style={{fontSize: 30}}>
+                    style={styles.titleWord}>
                     Login
                 </Text>
+                <View style={styles.signInForm}>
                 <TextInput
                     ref={component => this._username = component}
                     placeholder='Username'
@@ -82,6 +84,7 @@ class LogInScreen extends Component {
               onPress={this.userLogin}
               title="Submit"
           />
+          </View>
           <Button
           onPress={() => navigate('SignUp')}
           title="Sign Up"
@@ -98,10 +101,28 @@ class LogInScreen extends Component {
       onPress={() => navigate('InvitedEvent')}
       title="View Invited Events/Activities"
     />
-        </ScrollView>
+    </ScrollView>
+    </ImageBackground>
     )
   }
 }
+const styles = StyleSheet.create({
+ titleWord:{
+   fontSize: 35,
+   marginLeft: 110},
+backgroundImage: {
+   width: '100%',
+   height: '120%'
+},
+signInForm: {
+  marginTop: 20,
+  marginBottom: 20,
+  padding: 20,
+  display: 'flex',
+  flex: 1,
+
+}
+});
 
 class SignUpScreen extends Component {
   constructor(props){
@@ -568,7 +589,7 @@ export default class App extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styless = StyleSheet.create({
   text: { marginLeft: 5 },
   row: { height: 30 },
   btn: { width: 58, height: 18, backgroundColor: '#ccc', marginLeft: 15 },
