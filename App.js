@@ -4,6 +4,8 @@ import { StackNavigator } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import {createUser} from './Api';
+
 
 class LogInScreen extends Component {
   state = {
@@ -109,25 +111,17 @@ class SignUpScreen extends Component {
   }
 
   userSignUp = () => {
-
    this.setState({ isSigningUp: true, message: '' });
-
    var params = {
        email: this.state.email,
        name: this.state.name,
-       mobileNumber: this.state.mobileNumber,
+       contactNo: this.state.mobileNumber,
        password: this.state.password,
-       grant_type: 'password'
    };
-
-    var formBody = [];
-    for (var property in params) {
-        var encodedKey = encodeURIComponent(property);
-        var encodedValue = encodeURIComponent(params[property]);
-        formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
-    Alert.alert(formBody);
+   createUser(params.email, params.contactNo, params.name, params.password,(token)=>{
+     console.log(token);         
+     this.props.navigation('Login');
+   });
   }
 
   clearEmail = () => {
