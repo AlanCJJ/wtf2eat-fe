@@ -5,6 +5,7 @@ import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import {createUser} from './Api';
+import Map from './Map';
 
 
 class LogInScreen extends Component {
@@ -119,7 +120,7 @@ class SignUpScreen extends Component {
        password: this.state.password,
    };
    createUser(params.email, params.contactNo, params.name, params.password,(token)=>{
-     console.log(token);         
+     console.log(token);
      this.props.navigation('Login');
    });
   }
@@ -389,6 +390,8 @@ class CreateScreen extends Component {
         label='Favorite Fruit'
         data={data}
       />
+      <Map/>
+
       </ScrollView>
     )
   }

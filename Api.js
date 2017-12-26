@@ -1,4 +1,4 @@
-const backendUrl = 'http://192.168.0.175:3000/api'
+const backendUrl = 'http://192.168.2.139:3000/api'
 
 export const createUser = (email, contactNo, name, password, cb = {}) => {
   console.log('you Hit!');
