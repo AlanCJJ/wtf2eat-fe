@@ -1,222 +1,583 @@
-import React from 'react';
-import { StyleSheet,AppRegistry, Text, View, Dimensions,TextInput} from 'react-native';
-import MapView from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
+import React, { Component } from 'react';
+import { ScrollView, StyleSheet, TextInput, Text, View, Button, Alert, ActivityIndicator, Picker, TouchableOpacity } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import DatePicker from 'react-native-datepicker';
+import { Dropdown } from 'react-native-material-dropdown';
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
-const {width,height} = Dimensions.get('window')
+class LogInScreen extends Component {
+  state = {
+    username: '',
+    password: '',
+    isLoggingIn: false,
+    message: ''
+  }
 
-const SCREEN_HEIGHT = height
-const SCREEN_WIDTH = width
-const ASPECT_RATIO = width/height
-const LATTITUDE_DELTA = 0.09222
-const LONGTITUDE_DELTA = LATTITUDE_DELTA * ASPECT_RATIO
+  userLogin = () => {
 
+   this.setState({ isLoggingIn: true, message: '' });
 
+   var params = {
+       username: this.state.username,
+       password: this.state.password,
+       grant_type: 'password'
+   };
 
-export default class App extends React.Component {
-  constructor(props){
-    super(props)
-
-    this.state ={
-      initialPosition: {
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta: 0,
-        longitudeDelta: 0
-      },
-      markerPosition: {
-        latitude: 0,
-        longitude: 0
-      },
-      origin: '',
-      destination: ''
+    var formBody = [];
+    for (var property in params) {
+        var encodedKey = encodeURIComponent(property);
+        var encodedValue = encodeURIComponent(params[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
     }
-    this.mapOnPress = this.mapOnPress.bind(this);
-    this.getLongLatByPlaceQuery = this.getLongLatByPlaceQuery.bind(this);
+    formBody = formBody.join("&");
+    Alert.alert(formBody);
   }
 
-  watchId: ? number = null
-
-  mapOnPress(e){
-
-  let latitude = parseFloat(e.nativeEvent.coordinate.latitude)
-  let longitude = parseFloat(e.nativeEvent.coordinate.longitude)
-
-  var initialRegion = {
-    latitude: latitude,
-    longitude: longitude,
-    latitudeDelta: LATTITUDE_DELTA,
-    longitudeDelta: LONGTITUDE_DELTA
+  clearUsername = () => {
+    this._username.setNativeProps({ text: '' });
+    this.setState({ message: '' });
   }
 
-  this.setState({markerPosition: initialRegion})
-  }
-
-  getLongLatByPlaceQuery(e){
-    let query = e.origin.replace(' ','+');
-    if (query.length < 3){
-      return;
-    }
-    var googleURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='+query+"&key=AIzaSyDbWFNFsCZQpc4aiZ0_AcvvDc9ryV2mq7U";
-    fetch(googleURL)
-    .then((response) => { response.json()
-      .then((responseJson) => {
-        if(responseJson.results[0]){
-          var markerPosition = {
-            latitude:responseJson.results[0].geometry.location.lat,
-            longitude:responseJson.results[0].geometry.location.lng,
-            latitudeDelta: LATTITUDE_DELTA,
-            longitudeDelta: LONGTITUDE_DELTA
-          };
-          this.setState({markerPosition,initialPosition: markerPosition});
-        }
-        }).catch((error) => {
-        console.error(error);
-      });
-    });
-  }
-
-
-  componentDidMount(){
-    // If (this is set location){
-    navigator.geolocation.getCurrentPosition((position) => {
-      var lat = parseFloat(position.coords.latitude)
-      var long = parseFloat(position.coords.longitude)
-
-      var initialRegion = {
-        latitude: lat,
-        longitude: long,
-        latitudeDelta: LATTITUDE_DELTA,
-        longitudeDelta: LONGTITUDE_DELTA
-      }
-
-      this.setState({initialPosition: initialRegion})
-      this.setState({markerPosition: initialRegion})
-
-    }, (error) => {
-      alert(JSON.stringify(error));
-    },{
-      enableHighAccuracy: true ,
-      timeout:20000,
-      maximumAge: 1000
-    })
-    //} else {
-      // this is load location
-      /*
-      api.getEventLocation((event)=>{
-        let initialRegion = {
-          lattitude: res.data.lat,
-          longtitude: rea.data.long
-          //
-          //
-        };
-        // this.setState({initialPosition: initialRegion})
-        // this.setState({markerPosition: initialRegion})
-      }
-      */
-      //
-    //}
-    // .catch((ex)=>{console.log(ex)})
-
-    // this.watchID = navigator.geolocation.watchPosition((position) => {
-    //   var lat = parseFloat(position.coords.latitude)
-    //   var long = parseFloat(position.coords.longitude)
-    //
-    //   console.log(lat);
-    //   console.log(long);
-    //
-    //   var lastRegion = {
-    //     latitude: lat,
-    //     longitude: long,
-    //     longitudeDelta: LONGTITUDE_DELTA,
-    //     latitudeDelta: LATTITUDE_DELTA
-    //   }
-    //
-    //   this.setState({initialPosition: lastRegion})
-    //   this.setState({markerPosition: lastRegion})
-    // })
-  }
-
-  componentWillUnmount() {
-    // navigator.geolocation.clearWatch(this.watchID)
+  clearPassword = () => {
+    this._password.setNativeProps({ text: '' });
+    this.setState({ message: '' });
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
-
-      <View style={styles.container}>
-
-      <Text style={{fontSize: 20}}>Location:</Text>
-        <TextInput
-          style={{height: 40}}
-          placeholder="Current Location"
-          onChangeText={(origin) => this.getLongLatByPlaceQuery({origin})}
+      <ScrollView style={{padding: 30}}>
+                <Text
+                    style={{fontSize: 30}}>
+                    Login
+                </Text>
+                <TextInput
+                    ref={component => this._username = component}
+                    placeholder='Username'
+                    onChangeText={(username) => this.setState({username})}
+                    autoFocus={true}
+                    onFocus={this.clearUsername}
+                />
+                <TextInput
+                    ref={component => this._password = component}
+                    placeholder='Password'
+                    onChangeText={(password) => this.setState({password})}
+                    secureTextEntry={true}
+                    onFocus={this.clearPassword}
+                    onSubmitEditing={this.userLogin}
+                />
+                {!!this.state.message && (
+                    <Text
+                        style={{fontSize: 14, color: 'red', padding: 5}}>
+                        {this.state.message}
+                    </Text>
+                )}
+                {this.state.isLoggingIn && <ActivityIndicator />}
+                <View style={{margin:7}} />
+                <Button
+                    disabled={this.state.isLoggingIn||!this.state.username||!this.state.password}
+              onPress={this.userLogin}
+              title="Submit"
+          />
+          <Button
+          onPress={() => navigate('SignUp')}
+          title="Sign Up"
         />
+          <Button
+          onPress={() => navigate('Chat')}
+          title="Create Event/Activity"
+        />
+        <Button
+        onPress={() => navigate('Event')}
+        title="View Events/Activities"
+      />
+      <Button
+      onPress={() => navigate('InvitedEvent')}
+      title="View Invited Events/Activities"
+    />
+        </ScrollView>
+    )
+  }
+}
 
-      <MapView style ={styles.map}
-        region = {this.state.initialPosition}
-        ref={c => this.mapView = c}
-        onPress = {this.mapOnPress}>
-        <MapView.Marker coordinate = {this.state.markerPosition}>
+class SignUpScreen extends Component {
+  state = {
+    email: '',
+    password: '',
+    isSigningUp: false,
+    message: ''
+  }
 
-        <View style ={styles.radius}>
-          <View style={styles.marker}/>
+  userSignUp = () => {
+
+   this.setState({ isSigningUp: true, message: '' });
+
+   var params = {
+       email: this.state.email,
+       name: this.state.name,
+       mobileNumber: this.state.mobileNumber,
+       password: this.state.password,
+       grant_type: 'password'
+   };
+
+    var formBody = [];
+    for (var property in params) {
+        var encodedKey = encodeURIComponent(property);
+        var encodedValue = encodeURIComponent(params[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    Alert.alert(formBody);
+  }
+
+  clearEmail = () => {
+    this._email.setNativeProps({ text: '' });
+    this.setState({ message: '' });
+  }
+
+  clearName = () => {
+    this._name.setNativeProps({ text: '' });
+    this.setState({ message: '' });
+  }
+
+  clearPassword = () => {
+    this._password.setNativeProps({ text: '' });
+    this.setState({ message: '' });
+  }
+
+  clearMobileNumber = () => {
+    this._password.setNativeProps({ text: '' });
+    this.setState({ message: '' });
+  }
+
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+      <ScrollView style={{padding: 30}}>
+                <Text
+                    style={{fontSize: 30}}>
+                    Sign Up
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    Full Name
+                </Text>
+                <TextInput
+                    ref={component => this._name = component}
+                    placeholder='Full Name'
+                    onChangeText={(name) => this.setState({name})}
+                    autoFocus={true}
+                    onFocus={this.clearName}
+                />
+                <Text
+                    style={{fontSize: 20}}>
+                    E-mail
+                </Text>
+                <TextInput
+                    ref={component => this._email = component}
+                    placeholder='Email'
+                    onChangeText={(email) => this.setState({email})}
+                    autoFocus={true}
+                    onFocus={this.clearEmail}
+                />
+                <Text
+                    style={{fontSize: 20}}>
+                    Mobile Number
+                </Text>
+                <TextInput
+                    ref={component => this._mobileNumber = component}
+                    placeholder='Mobile Number'
+                    keyboardType='numeric'
+                    onChangeText={(mobileNumber) => this.setState({mobileNumber})}
+                    onFocus={this.clearMobileNumber}
+                    onSubmitEditing={this.userSignUp}
+                />
+                <Text
+                    style={{fontSize: 20}}>
+                    Password
+                </Text>
+                <TextInput
+                    ref={component => this._password = component}
+                    placeholder='Password'
+                    onChangeText={(password) => this.setState({password})}
+                    secureTextEntry={true}
+                    onFocus={this.clearPassword}
+                    onSubmitEditing={this.userSignUp}
+                />
+                {!!this.state.message && (
+                    <Text
+                        style={{fontSize: 14, color: 'red', padding: 5}}>
+                        {this.state.message}
+                    </Text>
+                )}
+                {this.state.isSigningUp && <ActivityIndicator />}
+                <View style={{margin:7}} />
+                <Button
+                    disabled={this.state.isSigningUp||!this.state.email||!this.state.password||!this.state.name}
+              onPress={this.userSignUp}
+              title="Submit"
+          />
+          <Button
+          onPress={() => navigate('Login')}
+          title="Log In"
+        />
+        </ScrollView>
+    )
+  }
+}
+
+class CreateScreen extends Component {
+  // Nav options can be defined as a function of the screen's props:
+  constructor(props){
+    super(props);
+    this.state = { text: 'Useless Placeholder' };
+    this.state = {startDate:"2016-05-15"}
+    this.state = {endDate:"2016-05-15"}
+    this.state = {startTime:"11:04"}
+    this.state = {endTime:"11:04"}
+  }
+  render(){
+    let data = [{
+        value: 'Banana',
+      }, {
+        value: 'Mango',
+      }, {
+        value: 'Pear',
+      }];
+    return (
+      <ScrollView style={{padding: 30}}>
+      <Text
+          style={{fontSize: 30}}>
+          Activity/Event Name
+      </Text>
+      <TextInput
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={(text) => this.setState({text})}
+        value={this.state.text}
+      />
+        <Text
+            style={{fontSize: 30}}>
+            Start Date
+        </Text>
+      <DatePicker
+        style={{width: 200}}
+        date={this.state.startDate}
+        mode="date"
+        placeholder="select date"
+        format="YYYY-MM-DD"
+        minDate="2016-05-01"
+        maxDate="2016-06-01"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            marginLeft: 36
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(startDate) => {this.setState({startDate: startDate})}}
+      />
+      <Text
+          style={{fontSize: 30}}>
+        End Date
+      </Text>
+    <DatePicker
+      style={{width: 200}}
+      date={this.state.endDate}
+      mode="date"
+      placeholder="select date"
+      format="YYYY-MM-DD"
+      minDate="2016-05-01"
+      maxDate="2016-06-01"
+      confirmBtnText="Confirm"
+      cancelBtnText="Cancel"
+      customStyles={{
+        dateIcon: {
+          position: 'absolute',
+          left: 0,
+          top: 4,
+          marginLeft: 0
+        },
+        dateInput: {
+          marginLeft: 36
+        }
+        // ... You can check the source to find the other keys.
+      }}
+      onDateChange={(endDate) => {this.setState({endDate: endDate})}}
+    />
+    <Text
+        style={{fontSize: 30}}>
+      Start Time
+    </Text>
+      <DatePicker
+        style={{width: 200}}
+        date={this.state.startTime}
+        mode="time"
+        placeholder="select time"
+        format="HH-mm"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            marginLeft: 36
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(startTime) => {this.setState({startTime: startTime})}}
+  />
+  <Text
+      style={{fontSize: 30}}>
+    End Time
+  </Text>
+    <DatePicker
+      style={{width: 200}}
+      date={this.state.endTime}
+      mode="time"
+      placeholder="select time"
+      format="HH-mm"
+      confirmBtnText="Confirm"
+      cancelBtnText="Cancel"
+      customStyles={{
+        dateIcon: {
+          position: 'absolute',
+          left: 0,
+          top: 4,
+          marginLeft: 0
+        },
+        dateInput: {
+          marginLeft: 36
+        }
+        // ... You can check the source to find the other keys.
+      }}
+      onDateChange={(endTime) => {this.setState({endTime: endTime})}}
+/>
+<Text
+    style={{fontSize: 30}}>
+  Deadline
+</Text>
+  <DatePicker
+    style={{width: 200}}
+    date={this.state.deadline}
+    mode="date"
+    placeholder="Select Date"
+    format="YYYY-MM-DD"
+    minDate="2016-05-01"
+    maxDate="2016-06-01"
+    confirmBtnText="Confirm"
+    cancelBtnText="Cancel"
+    customStyles={{
+      dateIcon: {
+        position: 'absolute',
+        left: 0,
+        top: 4,
+        marginLeft: 0
+      },
+      dateInput: {
+        marginLeft: 36
+      }
+      // ... You can check the source to find the other keys.
+    }}
+    onDateChange={(deadline) => {this.setState({deadline: deadline})}}
+    />
+      <Dropdown
+        label='Favorite Fruit'
+        data={data}
+      />
+      </ScrollView>
+    )
+  }
+}
+
+class EventScreen extends Component {
+  _alert = (value) => {
+    Alert.alert(value);
+  }
+
+
+  render() {
+    const { navigate } = this.props.navigation;
+    const ele = (value) => (
+      <TouchableOpacity onPress={() => navigate('Details')}>
+        <View style={styles.btn}>
+          <Text style={styles.btnText}>button</Text>
         </View>
-        </MapView.Marker>
-
-        <MapViewDirections
-            origin={this.state.origin}
-            destination={this.state.destination}
-            apikey='AIzaSyDbWFNFsCZQpc4aiZ0_AcvvDc9ryV2mq7U'
-            strokeWidth={3}
-            strokeColor="hotpink"
-
-          onError={(errorMessage) => {
-            // console.log('GOT AN ERROR');
-          }}
-        />
-
-        </MapView>
-      </View>
+      </TouchableOpacity>
     );
+
+    const tableData = [
+      ['1', '2', '3', ele('line 1')],
+      ['a', 'b', 'c', ele('line 2')],
+      ['1', '2', '3', ele('line 3')],
+      ['a', 'b', 'c', ele('line 4')]
+    ];
+
+    return (
+      <View>
+        <Table>
+          <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
+        </Table>
+      </View>
+    )
+  }
+}
+
+class InvitedEventScreen extends Component {
+  _alert = (value) => {
+    Alert.alert(value);
+  }
+
+
+  render() {
+    const { navigate } = this.props.navigation;
+    const ele = (value) => (
+      <TouchableOpacity onPress={() => navigate('Details')}>
+        <View style={styles.btn}>
+          <Text style={styles.btnText}>button</Text>
+        </View>
+      </TouchableOpacity>
+    );
+
+    const tableData = [
+      ['1', '2', '3', ele('line 1')],
+      ['a', 'b', 'c', ele('line 2')],
+      ['1', '2', '3', ele('line 3')],
+      ['a', 'b', 'c', ele('line 4')]
+    ];
+
+    return (
+      <View>
+        <Table>
+          <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
+        </Table>
+      </View>
+    )
+  }
+}
+
+class DetailScreen extends Component {
+  render() {
+    return (
+      <ScrollView style={{padding: 30}}>
+                <Text
+                    style={{fontSize: 30}}>
+                    Details
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    Event/Activity Name
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    Start Date
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    End Date
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    Location
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    Deadline
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    Start Time
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    End Time
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Text
+                    style={{fontSize: 20}}>
+                    Status
+                </Text>
+                <Text
+                    style={{fontSize: 15}}>
+                    Example
+                </Text>
+                <Button
+                  title="Learn More"
+                  color="#841584"
+                  accessibilityLabel="Learn more about this purple button"
+                />
+        </ScrollView>
+    )
+  }
+
+}
+
+
+export const SimpleApp = StackNavigator({
+  Login: { screen: LogInScreen },
+  SignUp: { screen: SignUpScreen },
+  Chat: { screen: CreateScreen },
+  Event: { screen: EventScreen },
+  Details: { screen: DetailScreen },
+  InvitedEvent: { screen: InvitedEventScreen }
+});
+
+export default class App extends Component {
+  render() {
+    return <SimpleApp />;
   }
 }
 
 const styles = StyleSheet.create({
-  radius:{
-    height:50,
-    width:50,
-    borderRadius: 50 /2 ,
-    overflow: 'hidden',
-    backgroundColor: 'rgba(0,122,255,0.1)',
-    borderWidth:1,
-    borderColor: 'rgba(0,122,255,0.3)',
+  text: { marginLeft: 5 },
+  row: { height: 30 },
+  btn: { width: 58, height: 18, backgroundColor: '#ccc', marginLeft: 15 },
+  btnText: { textAlign: 'center', color: '#fff' },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  marker:{
-    height:20,
-    width:20,
-    borderWidth:3,
-    borderColor:'white',
-    borderRadius:20 / 2,
-    overflow: 'hidden',
-    backgroundColor: '#007AFF'
-  },
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 200,
-    right: 0,
   }
 });
