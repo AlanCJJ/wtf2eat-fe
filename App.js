@@ -61,7 +61,6 @@ export default class App extends React.Component {
     fetch(googleURL)
     .then((response) => { response.json()
       .then((responseJson) => {
-        console.log({wantseedis:responseJson.results});
         if(responseJson.results[0]){
           var markerPosition = {
             latitude:responseJson.results[0].geometry.location.lat,
