@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, TextInput, Text, View, Button, Alert, ActivityIndicator, Picker, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, Text, View, Button, Alert, ActivityIndicator, Picker, TouchableOpacity, AppRegistry } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -128,6 +128,27 @@ class SignUpScreen extends Component {
     }
     formBody = formBody.join("&");
     Alert.alert(formBody);
+
+        fetch("mongodb://localhost:27017", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            if (response.status==200) proceed = true;
+            else this.setState({ message: response.message });
+        })
+        .then(() => {
+            this.setState({ isLoggingIn: false })
+            if (proceed) this.props.onLoginPress();
+        })
+        .catch(err => {
+    this.setState({ message: err.message });
+    this.setState({ isLoggingIn: false })
+    });
   }
 
   clearEmail = () => {
