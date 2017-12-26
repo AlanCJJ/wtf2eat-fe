@@ -547,9 +547,7 @@ class DetailScreen extends Component {
         </ScrollView>
     )
   }
-
 }
-
 
 export const SimpleApp = StackNavigator({
   Login: { screen: LogInScreen },
