@@ -104,6 +104,9 @@ class LogInScreen extends Component {
 }
 
 class SignUpScreen extends Component {
+  constructor(props){
+    super(props);
+  }
   state = {
     email: '',
     password: '',
@@ -113,6 +116,7 @@ class SignUpScreen extends Component {
 
   userSignUp = () => {
    this.setState({ isSigningUp: true, message: '' });
+   const { navigate } = this.props.navigation;
    var params = {
        email: this.state.email,
        name: this.state.name,
@@ -121,7 +125,7 @@ class SignUpScreen extends Component {
    };
    createUser(params.email, params.contactNo, params.name, params.password,(token)=>{
      console.log(token);
-     this.props.navigation('Login');
+     navigate('Login');
    });
   }
 
