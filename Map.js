@@ -163,19 +163,6 @@ export default class Map extends React.Component {
           <View style={styles.marker}/>
         </View>
         </MapView.Marker>
-
-        <MapViewDirections
-            origin={this.state.origin}
-            destination={this.state.destination}
-            apikey='AIzaSyDbWFNFsCZQpc4aiZ0_AcvvDc9ryV2mq7U'
-            strokeWidth={3}
-            strokeColor="hotpink"
-
-          onError={(errorMessage) => {
-            // console.log('GOT AN ERROR');
-          }}
-        />
-
         </MapView>
       </View>
     );
