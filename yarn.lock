@@ -4503,10 +4503,6 @@ qs@6.5.1, qs@^6.2.1, qs@^6.5.0, qs@^6.5.1, qs@~6.5.1:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
 
-qs@^5.2.0:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-5.2.1.tgz#801fee030e0b9450d6385adc48a4cc55b44aedfc"
-
 qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
@@ -4634,31 +4630,13 @@ react-native-gesture-handler@1.0.0-alpha.30:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-google-place-picker@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-google-place-picker/-/react-native-google-place-picker-1.2.1.tgz#8b014d60102f72364e0dcf4ec63811c291f80708"
-
-react-native-google-places-autocomplete@^1.3.6:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.3.6.tgz#352ba0858f647c0c2caba448b6b6296984d8c7af"
-  dependencies:
-    lodash.debounce "^4.0.8"
-    prop-types "^15.5.10"
-    qs "^5.2.0"
-
-react-native-google-places@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-google-places/-/react-native-google-places-2.4.2.tgz#ac4cf3391481ecd89803282554e209f0bfefc31e"
-
-react-native-maps-directions@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-maps-directions/-/react-native-maps-directions-1.3.0.tgz#66654518c9f3a6a6657ad158f3252cf27bcaab01"
-  dependencies:
-    prop-types "^15.6.0"
-
 react-native-maps@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.17.1.tgz#ab2236341fd984dac8864202ae55331bc262f60c"
+
+react-native-maps@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.19.0.tgz#ce94fad1cf360e335cb4338a68c95f791e869074"
 
 react-native-material-buttons@^0.5.0:
   version "0.5.0"

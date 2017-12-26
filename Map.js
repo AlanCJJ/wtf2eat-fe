@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet,AppRegistry, Text, View, Dimensions,TextInput} from 'react-native';
 import MapView from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
 
 const {width,height} = Dimensions.get('window')
 
