@@ -61,6 +61,7 @@ class LogInScreen extends Component {
                     placeholder='Username'
                     onChangeText={(username) => this.setState({username})}
                     autoFocus={true}
+                    style={styles.userName}
                     onFocus={this.clearUsername}
                 />
                 <TextInput
@@ -69,6 +70,7 @@ class LogInScreen extends Component {
                     onChangeText={(password) => this.setState({password})}
                     secureTextEntry={true}
                     onFocus={this.clearPassword}
+                    style={styles.password}
                     onSubmitEditing={this.userLogin}
                 />
                 {!!this.state.message && (
@@ -84,11 +86,11 @@ class LogInScreen extends Component {
               onPress={this.userLogin}
               title="Submit"
           />
-          </View>
           <Button
           onPress={() => navigate('SignUp')}
           title="Sign Up"
         />
+        </View>
           <Button
           onPress={() => navigate('Chat')}
           title="Create Event/Activity"
@@ -119,8 +121,15 @@ signInForm: {
   marginBottom: 20,
   padding: 20,
   display: 'flex',
-  flex: 1,
 
+},
+userName:{
+  paddingBottom: 10,
+  paddingLeft: 5
+},
+password:{
+  paddingBottom: 10,
+  paddingLeft: 5
 }
 });
 
@@ -415,12 +424,19 @@ class CreateScreen extends Component {
         label='Favorite Fruit'
         data={data}
       />
-      <Map/>
+      <Map style={createScreen.googleMap}/>
 
       </ScrollView>
     )
   }
 }
+
+const createScreen = StyleSheet.create({
+  googleMap:{
+    marginTop:'1000%',
+  }
+
+});
 
 class EventScreen extends Component {
   _alert = (value) => {

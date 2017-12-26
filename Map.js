@@ -204,5 +204,7 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 200,
     right: 0,
+    marginTop: 1000
+    marginBottom: -500
   }
 });
