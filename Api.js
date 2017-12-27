@@ -18,3 +18,31 @@ export const createUser = (email, contactNo, name, password, cb = {}) => {
     cb(token);
   });;
 }
+
+export const createEvent = (startDate, endDate, placeName, longitude, latitude, activityName,
+  deadline, startTime, endTime, invitationOnly, organiser, remarks, cb = {}) => {
+  console.log('you Hit again!');
+  fetch(backendUrl + '/events', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        startDate,
+        endDate,
+        placeName,
+        longitude,
+        latitude,
+        activityName,
+        deadline,
+        startTime,
+        endTime,
+        invitationOnly,
+        organiser,
+        remarks
+    }),
+  }).then((token)=>{
+    cb(token);
+  });;
+}

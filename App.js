@@ -4,7 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
-import {createUser} from './Api';
+import { createEvent, createUser } from './Api';
 import Map from './Map';
 
 
@@ -274,11 +274,26 @@ class CreateScreen extends Component {
   constructor(props){
     super(props);
     this.state = { text: 'Useless Placeholder' };
-    this.state = {startDate:"2016-05-15"}
-    this.state = {endDate:"2016-05-15"}
-    this.state = {startTime:"11:04"}
-    this.state = {endTime:"11:04"}
   }
+
+  doEvent = () => {
+   const { navigate } = this.props.navigation;
+   var params = {
+       activityName: this.state.activityName,
+       startDate: this.state.startDate,
+       endDate: this.state.endDate,
+       deadline: this.state.deadline,
+       startTime: this.state.startTime,
+       endTime: this.state.endTime,
+   };
+   createEvent(params.startDate, params.endDate, params.placeName, params.longitude, params.latitude,
+     params.activityName, params.deadline,
+     params.startTime, params.endTime, params.invitationOnly, params.organiser, params.remarks,(token)=>{
+     console.log(token);
+     navigate('Login');
+   });
+  }
+
   render(){
     let data = [{
         value: 'Banana',
@@ -295,8 +310,8 @@ class CreateScreen extends Component {
       </Text>
       <TextInput
         style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={(text) => this.setState({text})}
-        value={this.state.text}
+        onChangeText={(activityName) => this.setState({activityName})}
+        value={this.state.activityName}
       />
         <Text
             style={{fontSize: 30}}>
@@ -308,8 +323,6 @@ class CreateScreen extends Component {
         mode="date"
         placeholder="select date"
         format="YYYY-MM-DD"
-        minDate="2016-05-01"
-        maxDate="2016-06-01"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         customStyles={{
@@ -336,8 +349,6 @@ class CreateScreen extends Component {
       mode="date"
       placeholder="select date"
       format="YYYY-MM-DD"
-      minDate="2016-05-01"
-      maxDate="2016-06-01"
       confirmBtnText="Confirm"
       cancelBtnText="Cancel"
       customStyles={{
@@ -416,8 +427,6 @@ class CreateScreen extends Component {
     mode="date"
     placeholder="Select Date"
     format="YYYY-MM-DD"
-    minDate="2016-05-01"
-    maxDate="2016-06-01"
     confirmBtnText="Confirm"
     cancelBtnText="Cancel"
     customStyles={{
@@ -440,6 +449,11 @@ class CreateScreen extends Component {
       />
 
       <Map/>
+
+      <Button
+    onPress={this.doEvent}
+    title="Submit"
+/>
 
       </ScrollView>
     )
