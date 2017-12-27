@@ -139,7 +139,7 @@ class LandingScreen extends Component {
   constructor(props){
     super(props);
   }
-  
+
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
@@ -566,10 +566,10 @@ class InvitedEventScreen extends Component {
     );
 
     const tableData = [
-      ['1', '2', '3', ele('line 1')],
-      ['a', 'b', 'c', ele('line 2')],
-      ['1', '2', '3', ele('line 3')],
-      ['a', 'b', 'c', ele('line 4')]
+      ['Chinese New Year Reunion', '15 February 2018', 'Janson house', ele('line 1')],
+      ['Farewell Lol', '5 December 2018', 'Lol house', ele('line 2')],
+      ['Farewell Alex', '2 December 2020', 'Alex house', ele('line 3')],
+      ['Farewell Alice', '1 December 2019', 'Alice house', ele('line 4')]
     ];
 
     return (
