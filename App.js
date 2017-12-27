@@ -182,11 +182,13 @@ class SignUpScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
+      <ImageBackground source={require ('./download.jpg')} style={signUpSreen.backgroundImage}>
       <ScrollView style={{padding: 30}}>
                 <Text
-                    style={{fontSize: 30}}>
+                    style={{fontSize: 30, paddingLeft:105}}>
                     Sign Up
                 </Text>
+                <Image source={require ('./male-user-shadow_318-34042.jpg')} style={{height:100,width:100,borderRadius: 50,marginLeft:105,color:'red'}}/>
                 <Text
                     style={{fontSize: 20}}>
                     Full Name
@@ -196,6 +198,7 @@ class SignUpScreen extends Component {
                     placeholder='Full Name'
                     onChangeText={(name) => this.setState({name})}
                     autoFocus={true}
+                    style= {{paddingLeft:5 , paddingBottom: 5 }}
                     onFocus={this.clearName}
                 />
                 <Text
@@ -207,6 +210,7 @@ class SignUpScreen extends Component {
                     placeholder='Email'
                     onChangeText={(email) => this.setState({email})}
                     autoFocus={true}
+                    style= {{paddingLeft:5 , paddingBottom: 5 }}
                     onFocus={this.clearEmail}
                 />
                 <Text
@@ -219,6 +223,7 @@ class SignUpScreen extends Component {
                     keyboardType='numeric'
                     onChangeText={(mobileNumber) => this.setState({mobileNumber})}
                     onFocus={this.clearMobileNumber}
+                    style= {{paddingLeft:5 , paddingBottom: 5 }}
                     onSubmitEditing={this.userSignUp}
                 />
                 <Text
@@ -231,6 +236,7 @@ class SignUpScreen extends Component {
                     onChangeText={(password) => this.setState({password})}
                     secureTextEntry={true}
                     onFocus={this.clearPassword}
+                    style= {{paddingLeft:5 , paddingBottom: 5 }}
                     onSubmitEditing={this.userSignUp}
                 />
                 {!!this.state.message && (
@@ -251,9 +257,17 @@ class SignUpScreen extends Component {
           title="Log In"
         />
         </ScrollView>
+        </ImageBackground>
     )
   }
 }
+
+const signUpSreen = StyleSheet.create({
+  backgroundImage: {
+    height: '100%',
+    width: '100%'
+  }
+})
 
 class CreateScreen extends Component {
   // Nav options can be defined as a function of the screen's props:
