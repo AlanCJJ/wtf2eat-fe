@@ -40,7 +40,6 @@ export const loginUser = (email, password, cb = {}) => {
 }
 export const createEvent = (startDate, endDate, placeName, longitude, latitude, activityName,
   deadline, startTime, endTime, invitationOnly, organiser, remarks, cb = {}) => {
-  console.log('you Hit again!');
   fetch(backendUrl + '/events', {
     method: 'POST',
     headers: {

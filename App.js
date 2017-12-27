@@ -301,10 +301,11 @@ const signUpSreen = StyleSheet.create({
 })
 
 class CreateScreen extends Component {
+  
   // Nav options can be defined as a function of the screen's props:
   constructor(props){
     super(props);
-    this.state = { text: 'Useless Placeholder' };
+    this.state = { text: 'Useless Placeholder', placeName: '' };
   }
 
   doEvent = () => {
@@ -355,6 +356,8 @@ class CreateScreen extends Component {
         onChangeText={(placeName) => this.setState({placeName})}
         value={this.state.placeName}
       />
+      
+      <Map placeName={ this.state.placeName }/>
         <Text
             style={styles.titleWord}>
             Start Date
@@ -490,7 +493,6 @@ class CreateScreen extends Component {
         data={data}
       />
 
-      <Map/>
       <Button
     onPress={this.doEvent}
     title="Submit"
@@ -670,10 +672,10 @@ class DetailScreen extends Component {
 }
 
 export const SimpleApp = StackNavigator({
+  Chat: { screen: CreateScreen },
   Login: { screen: LogInScreen },
   Landing: { screen: LandingScreen},
   SignUp: { screen: SignUpScreen },
-  Chat: { screen: CreateScreen },
   Event: { screen: EventScreen },
   Details: { screen: DetailScreen },
   InvitedEvent: { screen: InvitedEventScreen }

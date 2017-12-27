@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet,AppRegistry, Text, View, Dimensions,TextInput} from 'react-native';
 import MapView from 'react-native-maps';
+import { createEvent } from './Api'
 
 const {width,height} = Dimensions.get('window')
 
@@ -10,12 +11,9 @@ const ASPECT_RATIO = width/height
 const LATTITUDE_DELTA = 0.09222
 const LONGTITUDE_DELTA = LATTITUDE_DELTA * ASPECT_RATIO
 
-
-
 export default class Map extends React.Component {
   constructor(props){
     super(props)
-
     this.state ={
       initialPosition: {
         latitude: 0,
@@ -36,7 +34,7 @@ export default class Map extends React.Component {
 
   watchId: ? number = null
 
-  mapOnPress(e){
+  mapOnPress = (e) => {
 
   let latitude = parseFloat(e.nativeEvent.coordinate.latitude)
   let longitude = parseFloat(e.nativeEvent.coordinate.longitude)
@@ -51,11 +49,11 @@ export default class Map extends React.Component {
   this.setState({markerPosition: initialRegion})
   }
 
-  getLongLatByPlaceQuery(e){
-    let query = e.origin.replace(' ','+');
-    if (query.length < 3){
+  getLongLatByPlaceQuery(placeName){
+    if (placeName.length < 3){
       return;
     }
+    let query = placeName.replace(' ','+');
     var googleURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='+query+"&key=AIzaSyDbWFNFsCZQpc4aiZ0_AcvvDc9ryV2mq7U";
     fetch(googleURL)
     .then((response) => { response.json()
@@ -75,6 +73,11 @@ export default class Map extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.placeName !== this.props.placeName){
+      this.getLongLatByPlaceQuery(nextProps.placeName);
+    }
+  }
 
   componentDidMount(){
     // If (this is set location){
@@ -99,65 +102,19 @@ export default class Map extends React.Component {
       timeout:20000,
       maximumAge: 1000
     })
-    //} else {
-      // this is load location
-      /*
-      api.getEventLocation((event)=>{
-        let initialRegion = {
-          lattitude: res.data.lat,
-          longtitude: rea.data.long
-          //
-          //
-        };
-        // this.setState({initialPosition: initialRegion})
-        // this.setState({markerPosition: initialRegion})
-      }
-      */
-      //
-    //}
-    // .catch((ex)=>{console.log(ex)})
-
-    // this.watchID = navigator.geolocation.watchPosition((position) => {
-    //   var lat = parseFloat(position.coords.latitude)
-    //   var long = parseFloat(position.coords.longitude)
-    //
-    //   console.log(lat);
-    //   console.log(long);
-    //
-    //   var lastRegion = {
-    //     latitude: lat,
-    //     longitude: long,
-    //     longitudeDelta: LONGTITUDE_DELTA,
-    //     latitudeDelta: LATTITUDE_DELTA
-    //   }
-    //
-    //   this.setState({initialPosition: lastRegion})
-    //   this.setState({markerPosition: lastRegion})
-    // })
   }
 
   componentWillUnmount() {
-    // navigator.geolocation.clearWatch(this.watchID)
   }
 
   render() {
     return (
-
       <View style={styles.container}>
-
-      <Text style={{fontSize: 30}}>Location:</Text>
-        <TextInput
-          style={{height: 40,width: 100}}
-          placeholder="Current Location"
-          onChangeText={(origin) => this.getLongLatByPlaceQuery({origin})}
-        />
-        <View style={{padding:260}} />
       <MapView style ={styles.map}
         region = {this.state.initialPosition}
         ref={c => this.mapView = c}
         onPress = {this.mapOnPress}>
         <MapView.Marker coordinate = {this.state.markerPosition}>
-
         <View style ={styles.radius}>
           <View style={styles.marker}/>
         </View>
