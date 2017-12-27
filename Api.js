@@ -46,3 +46,29 @@ export const createEvent = (startDate, endDate, placeName, longitude, latitude, 
     cb(token);
   });;
 }
+
+export const getEvent = (status, cb = {}) => {
+  console.log('you Hit again!');
+  fetch(backendUrl + '/events?status=' + status, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  }).then((token)=>{
+    cb(token);
+  });;
+}
+
+// export const getEventById = (status, cb = {}) => {
+//   console.log('you Hit again!');
+//   fetch(backendUrl + '/events?status=' + status, {
+//     method: 'GET',
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//     },
+//   }).then((token)=>{
+//     cb(token);
+//   });;
+// }

@@ -4,7 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
-import { createEvent, createUser } from './Api';
+import { getEvent, createEvent, createUser } from './Api';
 import Map from './Map';
 
 
@@ -110,8 +110,9 @@ class LogInScreen extends Component {
 }
 const styles = StyleSheet.create({
  titleWord:{
-   fontSize: 35,
-   marginLeft: 110},
+   fontSize: 20,
+   textAlign: 'center'
+  },
 backgroundImage: {
    width: '100%',
    height: '120%'
@@ -285,6 +286,7 @@ class CreateScreen extends Component {
        deadline: this.state.deadline,
        startTime: this.state.startTime,
        endTime: this.state.endTime,
+       placeName: this.state.placeName,
    };
    createEvent(params.startDate, params.endDate, params.placeName, params.longitude, params.latitude,
      params.activityName, params.deadline,
@@ -303,10 +305,10 @@ class CreateScreen extends Component {
         value: 'Pear',
       }];
     return (
-      <ImageBackground source={require ('./background_02.jpg')} style={styles.backgroundImage}>
-      <ScrollView style={{padding: 30}}>
+      <ImageBackground source={require ('./background_02.jpeg')} style={styles.backgroundImage}>
+      <ScrollView style={{padding: 0}}>
       <Text
-          style={{fontSize: 30}}>
+          style={styles.titleWord}>
           Activity/Event Name
       </Text>
       <TextInput
@@ -314,8 +316,17 @@ class CreateScreen extends Component {
         onChangeText={(activityName) => this.setState({activityName})}
         value={this.state.activityName}
       />
+      <Text
+          style={styles.titleWord}>
+          Place Name
+      </Text>
+      <TextInput
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={(placeName) => this.setState({placeName})}
+        value={this.state.placeName}
+      />
         <Text
-            style={{fontSize: 30}}>
+            style={styles.titleWord}>
             Start Date
         </Text>
       <DatePicker
@@ -328,7 +339,7 @@ class CreateScreen extends Component {
         cancelBtnText="Cancel"
         customStyles={{
           dateIcon: {
-            position: 'absolute',
+            margin: 'auto',
             left: 0,
             top: 4,
             marginLeft: 0
@@ -341,7 +352,7 @@ class CreateScreen extends Component {
         onDateChange={(startDate) => {this.setState({startDate: startDate})}}
       />
       <Text
-          style={{fontSize: 30}}>
+          style={styles.titleWord}>
         End Date
       </Text>
     <DatePicker
@@ -367,7 +378,7 @@ class CreateScreen extends Component {
       onDateChange={(endDate) => {this.setState({endDate: endDate})}}
     />
     <Text
-        style={{fontSize: 30}}>
+        style={styles.titleWord}>
       Start Time
     </Text>
       <DatePicker
@@ -393,7 +404,7 @@ class CreateScreen extends Component {
         onDateChange={(startTime) => {this.setState({startTime: startTime})}}
   />
   <Text
-      style={{fontSize: 30}}>
+      style={styles.titleWord}>
     End Time
   </Text>
     <DatePicker
@@ -419,7 +430,7 @@ class CreateScreen extends Component {
       onDateChange={(endTime) => {this.setState({endTime: endTime})}}
 />
 <Text
-    style={{fontSize: 30}}>
+    style={styles.titleWord}>
   Deadline
 </Text>
   <DatePicker
@@ -450,13 +461,13 @@ class CreateScreen extends Component {
       />
 
       <Map/>
-
-      <Text style={{height: 1000}}></Text>
-
       <Button
     onPress={this.doEvent}
     title="Submit"
 />
+
+      <Text style={{height: 1000}}></Text>
+
 
       </ScrollView>
       </ImageBackground>
@@ -474,30 +485,36 @@ class EventScreen extends Component {
     Alert.alert(value);
   }
 
-
   render() {
     const { navigate } = this.props.navigation;
     const ele = (value) => (
       <TouchableOpacity onPress={() => navigate('Details')}>
         <View style={styles.btn}>
-          <Text style={styles.btnText}>button</Text>
+          <Text style={styles.btnText}>View</Text>
         </View>
       </TouchableOpacity>
     );
 
     const tableData = [
-      ['1', '2', '3', ele('line 1')],
-      ['a', 'b', 'c', ele('line 2')],
-      ['1', '2', '3', ele('line 3')],
-      ['a', 'b', 'c', ele('line 4')]
+      ['Host A Club', '21 December 2017', 'St. Regis Hotel', ele('line 1')],
+      ['Christmas Dinner', '25 December 2017', 'Ritz Carlton Hotel', ele('line 2')],
+      ['Halloween Party', '15 October 2017', 'Duet Residence', ele('line 3')],
+      ['Chinese New Year Reunion', '15 February 2018', 'My House', ele('line 4')]
     ];
 
     return (
+      <ScrollView style={{padding: 30}}>
       <View>
+      <Text
+          style={{fontSize: 30}}>
+          Event/Activities List
+      </Text>
         <Table>
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
         </Table>
       </View>
+      </ScrollView>
+
     )
   }
 }
@@ -544,16 +561,12 @@ class DetailScreen extends Component {
                     Details
                 </Text>
                 <Text
-                    style={{fontSize: 15}}>
-                    Example
-                </Text>
-                <Text
                     style={{fontSize: 20}}>
                     Event/Activity Name
                 </Text>
                 <Text
                     style={{fontSize: 15}}>
-                    Example
+                    Christmas Dinner
                 </Text>
                 <Text
                     style={{fontSize: 20}}>
@@ -561,7 +574,7 @@ class DetailScreen extends Component {
                 </Text>
                 <Text
                     style={{fontSize: 15}}>
-                    Example
+                    25th December 2017
                 </Text>
                 <Text
                     style={{fontSize: 20}}>
@@ -569,7 +582,7 @@ class DetailScreen extends Component {
                 </Text>
                 <Text
                     style={{fontSize: 15}}>
-                    Example
+                    26th December 2017
                 </Text>
                 <Text
                     style={{fontSize: 20}}>
@@ -577,7 +590,7 @@ class DetailScreen extends Component {
                 </Text>
                 <Text
                     style={{fontSize: 15}}>
-                    Example
+                    Ritz Carlton Hotel
                 </Text>
                 <Text
                     style={{fontSize: 20}}>
@@ -585,7 +598,7 @@ class DetailScreen extends Component {
                 </Text>
                 <Text
                     style={{fontSize: 15}}>
-                    Example
+                    20th December 2017
                 </Text>
                 <Text
                     style={{fontSize: 20}}>
@@ -593,7 +606,7 @@ class DetailScreen extends Component {
                 </Text>
                 <Text
                     style={{fontSize: 15}}>
-                    Example
+                    7:00PM
                 </Text>
                 <Text
                     style={{fontSize: 20}}>
@@ -601,7 +614,7 @@ class DetailScreen extends Component {
                 </Text>
                 <Text
                     style={{fontSize: 15}}>
-                    Example
+                    12:00AM
                 </Text>
                 <Text
                     style={{fontSize: 20}}>
@@ -609,11 +622,16 @@ class DetailScreen extends Component {
                 </Text>
                 <Text
                     style={{fontSize: 15}}>
-                    Example
+                    GOING
                 </Text>
                 <Button
-                  title="Learn More"
-                  color="#841584"
+                  title="YES"
+                  color="#15e411"
+                  accessibilityLabel="Learn more about this purple button"
+                />
+                <Button
+                  title="NO"
+                  color="#ff1414"
                   accessibilityLabel="Learn more about this purple button"
                 />
         </ScrollView>
