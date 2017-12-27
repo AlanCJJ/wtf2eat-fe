@@ -147,11 +147,11 @@ export default class Map extends React.Component {
 
       <Text style={{fontSize: 20}}>Location:</Text>
         <TextInput
-          style={{height: 40}}
+          style={{height: 40,width: 100}}
           placeholder="Current Location"
           onChangeText={(origin) => this.getLongLatByPlaceQuery({origin})}
         />
-
+        <View style={{padding:250}} />
       <MapView style ={styles.map}
         region = {this.state.initialPosition}
         ref={c => this.mapView = c}
@@ -200,10 +200,9 @@ const styles = StyleSheet.create({
   },
   map: {
     position: 'absolute',
-    top: 500,
+    top: 600,
     left: 0,
-    bottom: -1000,
+    bottom: 600,
     right: 0,
-    paddingBottom: 200,
   }
 });

@@ -188,7 +188,7 @@ class SignUpScreen extends Component {
                     style={{fontSize: 30, paddingLeft:105}}>
                     Sign Up
                 </Text>
-                <Image source={require ('./male-user-shadow_318-34042.jpg')} style={{height:100,width:100,borderRadius: 50,marginLeft:105,color:'red'}}/>
+                <Image source={require ('./male-user-shadow_318-34042.jpg')} style={{height:100,width:100,borderRadius: 50,marginLeft:105}}/>
                 <Text
                     style={{fontSize: 20}}>
                     Full Name
@@ -303,7 +303,8 @@ class CreateScreen extends Component {
         value: 'Pear',
       }];
     return (
-      <ScrollView style={createScreen.wholePage}>
+      <ImageBackground source={require ('./background_02.jpg')} style={styles.backgroundImage}>
+      <ScrollView style={{padding: 30}}>
       <Text
           style={{fontSize: 30}}>
           Activity/Event Name
@@ -450,12 +451,15 @@ class CreateScreen extends Component {
 
       <Map/>
 
+      <Text style={{height: 1000}}></Text>
+
       <Button
     onPress={this.doEvent}
     title="Submit"
 />
 
       </ScrollView>
+      </ImageBackground>
     )
   }
 }
