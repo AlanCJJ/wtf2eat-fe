@@ -9,6 +9,13 @@ import Map from './Map';
 
 
 class LogInScreen extends Component {
+  constructor(props){
+    super(props);
+    if (this.state.loginUser){
+      const { navigate } = this.props.navigation;
+      navigate('Landing');
+    }
+  }
   state = {
     username: '',
     password: '',
@@ -26,14 +33,15 @@ class LogInScreen extends Component {
        grant_type: 'password'
    };
 
-    var formBody = [];
-    for (var property in params) {
-        var encodedKey = encodeURIComponent(property);
-        var encodedValue = encodeURIComponent(params[property]);
-        formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
-    Alert.alert(formBody);
+   loginUser(params.username, params.password, ((err, user)=>{
+      const { navigate } = this.props.navigation;
+     if (err) {
+       this.setState({ message: 'Invalid Email' });
+     } else {
+      let jsonUser =  JSON.parse(user._bodyText)
+      navigate('Landing', { user: jsonUser });
+      }
+   }));
   }
 
   clearUsername = () => {
@@ -51,63 +59,54 @@ class LogInScreen extends Component {
     return (
     <ImageBackground source={require ('./eurovision_turkey_fan_page_background_by_alisarikaya-d56oqze.jpg')} style={styles.backgroundImage}>
       <ScrollView style={{padding: 30}}>
-                <Text
-                    style={styles.titleWord}>
-                    Login
-                </Text>
-                <View style={styles.signInForm}>
-                <TextInput
-                    ref={component => this._username = component}
-                    placeholder='Username'
-                    onChangeText={(username) => this.setState({username})}
-                    autoFocus={true}
-                    style={styles.userName}
-                    onFocus={this.clearUsername}
-                />
-                <TextInput
-                    ref={component => this._password = component}
-                    placeholder='Password'
-                    onChangeText={(password) => this.setState({password})}
-                    secureTextEntry={true}
-                    onFocus={this.clearPassword}
-                    style={styles.password}
-                    onSubmitEditing={this.userLogin}
-                />
-                {!!this.state.message && (
-                    <Text
-                        style={{fontSize: 14, color: 'red', padding: 5}}>
-                        {this.state.message}
-                    </Text>
-                )}
-                {this.state.isLoggingIn && <ActivityIndicator />}
-                <View style={{margin:7}} />
-                <Button
-                    disabled={this.state.isLoggingIn||!this.state.username||!this.state.password}
-              onPress={this.userLogin}
-              title="Submit"
-          />
-          <Button
+        <Text
+          style={styles.titleWord}>
+          Login
+        </Text>
+        <View style={styles.signInForm}>
+        <TextInput
+          ref={component => this._username = component}
+          placeholder='Username'
+          onChangeText={(username) => this.setState({username})}
+          autoFocus={true}
+          style={styles.userName}
+          onFocus={this.clearUsername}
+        />
+        <View style={{padding: 15}} />
+        <TextInput
+          ref={component => this._password = component}
+          placeholder='Password'
+          onChangeText={(password) => this.setState({password})}
+          secureTextEntry={true}
+          onFocus={this.clearPassword}
+          style={styles.password}
+          onSubmitEditing={this.userLogin}
+        />
+        {!!this.state.message && (
+          <Text
+            style={{fontSize: 14, color: 'red', padding: 5}}>
+            {this.state.message}
+          </Text>
+        )}
+        {this.state.isLoggingIn && <ActivityIndicator />}
+        <View style={{padding: 20}} />
+        <Button
+          disabled={this.state.isLoggingIn||!this.state.username||!this.state.password}
+          onPress={this.userLogin}
+          title="Submit"
+        />
+        <View style={{padding: 10}} />
+        <Button
           onPress={() => navigate('SignUp')}
           title="Sign Up"
         />
-        </View>
-          <Button
-          onPress={() => navigate('Chat')}
-          title="Create Event/Activity"
-        />
-        <Button
-        onPress={() => navigate('Event')}
-        title="View Events/Activities"
-      />
-      <Button
-      onPress={() => navigate('InvitedEvent')}
-      title="View Invited Events/Activities"
-    />
+      </View>
     </ScrollView>
     </ImageBackground>
     )
   }
 }
+
 const styles = StyleSheet.create({
  titleWord:{
    fontSize: 20,
@@ -134,6 +133,35 @@ password:{
 }
 });
 
+class LandingScreen extends Component {
+  constructor(props){
+    super(props);
+  }
+  
+  render() {
+    const { navigate } = this.props.navigation;
+    const { params } = this.props.navigation.state;
+    return(
+    <ImageBackground source={require ('./eurovision_turkey_fan_page_background_by_alisarikaya-d56oqze.jpg')} style={styles.backgroundImage}>
+    <ScrollView style={{padding: 30}}>
+        <Text style={styles.titleWord}>Hello, {params.user.name}</Text>
+        <Button
+          onPress={() => navigate('Chat')}
+          title="Create Event/Activity"
+          />
+        <Button
+          onPress={() => navigate('Event')}
+          title="View Events/Activities"/>
+        <Button
+          onPress={() => navigate('InvitedEvent')}
+          title="View Invited Events/Activities"
+        />
+  </ScrollView>
+  </ImageBackground>
+    )
+  }
+}
+
 class SignUpScreen extends Component {
   constructor(props){
     super(props);
@@ -149,14 +177,18 @@ class SignUpScreen extends Component {
    this.setState({ isSigningUp: true, message: '' });
    const { navigate } = this.props.navigation;
    var params = {
-       email: this.state.email,
-       name: this.state.name,
-       contactNo: this.state.mobileNumber,
-       password: this.state.password,
-   };
-   createUser(params.email, params.contactNo, params.name, params.password,(token)=>{
-     console.log(token);
-     navigate('Login');
+      email: this.state.email,
+      name: this.state.name,
+      contactNo: this.state.mobileNumber,
+      password: this.state.password,
+    };
+    createUser(params.email, params.contactNo, params.name, params.password,(err, token)=>{
+    if (err){
+      this.setState({ message: 'Error Trying to create User' });
+    } else {
+      console.log(token);
+      navigate('Login');
+    }
    });
   }
 
@@ -641,6 +673,7 @@ class DetailScreen extends Component {
 
 export const SimpleApp = StackNavigator({
   Login: { screen: LogInScreen },
+  Landing: { screen: LandingScreen},
   SignUp: { screen: SignUpScreen },
   Chat: { screen: CreateScreen },
   Event: { screen: EventScreen },

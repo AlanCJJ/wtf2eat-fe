@@ -1,7 +1,6 @@
-const backendUrl = 'http://192.168.2.139:3000/api'
+const backendUrl = 'http://192.168.0.175:3000/api'
 
 export const createUser = (email, contactNo, name, password, cb = {}) => {
-  console.log('you Hit!');
   fetch(backendUrl + '/auth/register', {
     method: 'POST',
     headers: {
@@ -15,10 +14,30 @@ export const createUser = (email, contactNo, name, password, cb = {}) => {
         contactNo
     }),
   }).then((token)=>{
-    cb(token);
-  });;
+    return cb(null, token);
+  }).catch((ex) => {
+    return cb(ex, null);
+  });
 }
 
+export const loginUser = (email, password, cb = {}) => {
+  fetch(backendUrl + '/auth/login', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        email,
+        password,
+    })
+  }).then((token)=>{
+    return cb(null, token);
+  }).catch((ex) => {
+    console.log(ex);
+    return cb(ex, null);
+  });
+}
 export const createEvent = (startDate, endDate, placeName, longitude, latitude, activityName,
   deadline, startTime, endTime, invitationOnly, organiser, remarks, cb = {}) => {
   console.log('you Hit again!');
