@@ -4,7 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
-import { getEvent, createEvent, createUser } from './Api';
+import { getEvent, createEvent, createUser, loginUser } from './Api';
 import Map from './Map';
 
 
