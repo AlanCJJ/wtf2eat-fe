@@ -20,7 +20,8 @@ class LogInScreen extends Component {
     username: '',
     password: '',
     isLoggingIn: false,
-    message: ''
+    message: '',
+    loginUser: null
   }
 
   userLogin = () => {
@@ -35,11 +36,12 @@ class LogInScreen extends Component {
 
    loginUser(params.username, params.password, ((err, user)=>{
       const { navigate } = this.props.navigation;
-     if (err) {
-       this.setState({ message: 'Invalid Email' });
+     if (err || JSON.parse(user._bodyText).error) {
+      this.setState({ isLoggingIn: false, message: 'Invalid Email' });
      } else {
-      let jsonUser =  JSON.parse(user._bodyText)
-      navigate('Landing', { user: jsonUser });
+        let jsonUser =  JSON.parse(user._bodyText)
+        this.setState({  isLoggingIn: false, loginUser: jsonUser })
+        navigate('Landing', { user: jsonUser });
       }
    }));
   }
@@ -285,10 +287,6 @@ class SignUpScreen extends Component {
               onPress={this.userSignUp}
               title="Submit"
           />
-          <Button
-          onPress={() => navigate('Login')}
-          title="Log In"
-        />
         </ScrollView>
         </ImageBackground>
     )
