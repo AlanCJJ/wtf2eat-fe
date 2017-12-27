@@ -59,12 +59,9 @@ class LogInScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-    <ImageBackground source={require ('./eurovision_turkey_fan_page_background_by_alisarikaya-d56oqze.jpg')} style={styles.backgroundImage}>
+    <ImageBackground source={require ('./background.jpg')} style={styles.backgroundImage}>
       <ScrollView style={{padding: 30}}>
-        <Text
-          style={styles.titleWord}>
-          Login
-        </Text>
+      <Image style={{marginLeft: 43}} source={require('./sortedlogo.png')}/>
         <View style={styles.signInForm}>
         <TextInput
           ref={component => this._username = component}
@@ -144,16 +141,20 @@ class LandingScreen extends Component {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return(
-    <ImageBackground source={require ('./eurovision_turkey_fan_page_background_by_alisarikaya-d56oqze.jpg')} style={styles.backgroundImage}>
+    <ImageBackground source={require ('./background.jpg')} style={styles.backgroundImage}>
     <ScrollView style={{padding: 30}}>
-        <Text style={styles.titleWord}>Hello, {params.user.name}</Text>
+    <Image style={{marginLeft: 43, marginBottom: 40}} source={require('./sortedlogo.png')}/>
+        <Text style={{fontSize: 40, textAlign: 'center'}}>Hello, {params.user.name}</Text>
+        <Text style={{height: 50}}/>
         <Button
           onPress={() => navigate('Chat')}
           title="Create Event/Activity"
           />
+          <View style={{margin:7}} />
         <Button
           onPress={() => navigate('Event')}
           title="View Events/Activities"/>
+          <View style={{margin:7}} />
         <Button
           onPress={() => navigate('InvitedEvent')}
           title="View Invited Events/Activities"
@@ -217,8 +218,9 @@ class SignUpScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ImageBackground source={require ('./download.jpg')} style={signUpSreen.backgroundImage}>
+      <ImageBackground source={require ('./background.jpg')} style={signUpSreen.backgroundImage}>
       <ScrollView style={{padding: 30}}>
+      <Image style={{marginLeft: 43}} source={require('./sortedlogo.png')}/>
                 <Text
                     style={{fontSize: 30, paddingLeft:105}}>
                     Sign Up
@@ -301,7 +303,7 @@ const signUpSreen = StyleSheet.create({
 })
 
 class CreateScreen extends Component {
-  
+
   // Nav options can be defined as a function of the screen's props:
   constructor(props){
     super(props);
@@ -336,8 +338,9 @@ class CreateScreen extends Component {
         value: 'Pear',
       }];
     return (
-      <ImageBackground source={require ('./background_02.jpeg')} style={styles.backgroundImage}>
-      <ScrollView style={{padding: 0}}>
+      <ImageBackground source={require ('./background.jpg')} style={styles.backgroundImage}>
+      <ScrollView style={{padding: 30}}>
+      <Image style={{marginLeft: 43, marginBottom: 40}} source={require('./sortedlogo.png')}/>
       <Text
           style={styles.titleWord}>
           Activity/Event Name
@@ -356,14 +359,14 @@ class CreateScreen extends Component {
         onChangeText={(placeName) => this.setState({placeName})}
         value={this.state.placeName}
       />
-      
+
       <Map placeName={ this.state.placeName }/>
         <Text
             style={styles.titleWord}>
             Start Date
         </Text>
       <DatePicker
-        style={{width: 200}}
+        style={{width: 300}}
         date={this.state.startDate}
         mode="date"
         placeholder="select date"
@@ -372,13 +375,14 @@ class CreateScreen extends Component {
         cancelBtnText="Cancel"
         customStyles={{
           dateIcon: {
-            margin: 'auto',
+            position: 'absolute',
             left: 0,
             top: 4,
             marginLeft: 0
           },
           dateInput: {
-            marginLeft: 36
+            height: 40,
+            marginLeft: 0
           }
           // ... You can check the source to find the other keys.
         }}
@@ -389,7 +393,7 @@ class CreateScreen extends Component {
         End Date
       </Text>
     <DatePicker
-      style={{width: 200}}
+      style={{width: 300}}
       date={this.state.endDate}
       mode="date"
       placeholder="select date"
@@ -404,7 +408,8 @@ class CreateScreen extends Component {
           marginLeft: 0
         },
         dateInput: {
-          marginLeft: 36
+          height: 40,
+          marginLeft: 0
         }
         // ... You can check the source to find the other keys.
       }}
@@ -415,7 +420,7 @@ class CreateScreen extends Component {
       Start Time
     </Text>
       <DatePicker
-        style={{width: 200}}
+        style={{width: 300}}
         date={this.state.startTime}
         mode="time"
         placeholder="select time"
@@ -430,7 +435,8 @@ class CreateScreen extends Component {
             marginLeft: 0
           },
           dateInput: {
-            marginLeft: 36
+            height: 40,
+            marginLeft: 0
           }
           // ... You can check the source to find the other keys.
         }}
@@ -441,7 +447,7 @@ class CreateScreen extends Component {
     End Time
   </Text>
     <DatePicker
-      style={{width: 200}}
+      style={{width: 300}}
       date={this.state.endTime}
       mode="time"
       placeholder="select time"
@@ -456,7 +462,8 @@ class CreateScreen extends Component {
           marginLeft: 0
         },
         dateInput: {
-          marginLeft: 36
+          height: 40,
+          marginLeft: 0
         }
         // ... You can check the source to find the other keys.
       }}
@@ -467,7 +474,7 @@ class CreateScreen extends Component {
   Deadline
 </Text>
   <DatePicker
-    style={{width: 200}}
+    style={{width: 300}}
     date={this.state.deadline}
     mode="date"
     placeholder="Select Date"
@@ -482,7 +489,8 @@ class CreateScreen extends Component {
         marginLeft: 0
       },
       dateInput: {
-        marginLeft: 36
+        height: 40,
+        marginLeft: 0
       }
       // ... You can check the source to find the other keys.
     }}
@@ -521,8 +529,8 @@ class EventScreen extends Component {
     const { navigate } = this.props.navigation;
     const ele = (value) => (
       <TouchableOpacity onPress={() => navigate('Details')}>
-        <View style={styles.btn}>
-          <Text style={styles.btnText}>View</Text>
+        <View style={styless.btn}>
+          <Text style={styless.btnText}>View</Text>
         </View>
       </TouchableOpacity>
     );
@@ -537,12 +545,13 @@ class EventScreen extends Component {
     return (
       <ScrollView style={{padding: 30}}>
       <View>
+      <Image style={{marginLeft: 43, marginBottom: 40}} source={require('./sortedlogo.png')}/>
       <Text
-          style={{fontSize: 30}}>
+          style={{textAlign: 'center', fontSize: 30}}>
           Event/Activities List
       </Text>
         <Table>
-          <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
+          <Rows data={tableData} style={styless.row} textStyle={styless.text}/>
         </Table>
       </View>
       </ScrollView>
@@ -561,25 +570,28 @@ class InvitedEventScreen extends Component {
     const { navigate } = this.props.navigation;
     const ele = (value) => (
       <TouchableOpacity onPress={() => navigate('Details')}>
-        <View style={styles.btn}>
-          <Text style={styles.btnText}>button</Text>
+        <View style={styless.btn}>
+          <Text style={styless.btnText}>View</Text>
         </View>
       </TouchableOpacity>
     );
 
     const tableData = [
-      ['Chinese New Year Reunion', '15 February 2018', 'Janson house', ele('line 1')],
-      ['Farewell Lol', '5 December 2018', 'Lol house', ele('line 2')],
-      ['Farewell Alex', '2 December 2020', 'Alex house', ele('line 3')],
-      ['Farewell Alice', '1 December 2019', 'Alice house', ele('line 4')]
+         ['Chinese New Year Reunion', '15 February 2018', 'Janson House', ele('line 1')],
+         ['Farewell Lol', '5 December 2018', 'Lol House', ele('line 2')],
+         ['Farewell Alex', '2 December 2020', 'Alex House', ele('line 3')],
+         ['Farewell Alice', '1 December 2019', 'Alice House', ele('line 4')]
     ];
 
     return (
+      <ScrollView style={{padding: 30}}>
       <View>
+      <Image style={{marginLeft: 43, marginBottom: 40}} source={require('./sortedlogo.png')}/>
         <Table>
-          <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
+          <Rows data={tableData} style={styless.row} textStyle={styless.text}/>
         </Table>
       </View>
+      </ScrollView>
     )
   }
 }
@@ -588,6 +600,7 @@ class DetailScreen extends Component {
   render() {
     return (
       <ScrollView style={{padding: 30}}>
+      <Image style={{marginLeft: 43, marginBottom: 40}} source={require('./sortedlogo.png')}/>
                 <Text
                     style={{fontSize: 30}}>
                     Details
@@ -656,16 +669,19 @@ class DetailScreen extends Component {
                     style={{fontSize: 15}}>
                     GOING
                 </Text>
+                <Text style={{height: 40}}/>
                 <Button
                   title="YES"
                   color="#15e411"
                   accessibilityLabel="Learn more about this purple button"
                 />
+                <View style={{margin:7}} />
                 <Button
                   title="NO"
                   color="#ff1414"
                   accessibilityLabel="Learn more about this purple button"
                 />
+                <Text style={{height: 50}}/>
         </ScrollView>
     )
   }
@@ -689,8 +705,8 @@ export default class App extends Component {
 
 const styless = StyleSheet.create({
   text: { marginLeft: 5 },
-  row: { height: 30 },
-  btn: { width: 58, height: 18, backgroundColor: '#ccc', marginLeft: 15 },
+  row: { height: 50 },
+  btn: { width: 58, height: 18, backgroundColor: '#1d70df', marginLeft: 5 },
   btnText: { textAlign: 'center', color: '#fff' },
   container: {
     flex: 1,
