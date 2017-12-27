@@ -200,11 +200,10 @@ const styles = StyleSheet.create({
   },
   map: {
     position: 'absolute',
-    top: 0,
+    top: 500,
     left: 0,
-    bottom: 200,
+    bottom: -1000,
     right: 0,
-    marginTop: 1000
-    marginBottom: -500
+    paddingBottom: 200,
   }
 });

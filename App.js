@@ -274,7 +274,7 @@ class CreateScreen extends Component {
         value: 'Pear',
       }];
     return (
-      <ScrollView style={{padding: 30}}>
+      <ScrollView style={createScreen.wholePage}>
       <Text
           style={{fontSize: 30}}>
           Activity/Event Name
@@ -424,7 +424,8 @@ class CreateScreen extends Component {
         label='Favorite Fruit'
         data={data}
       />
-      <Map style={createScreen.googleMap}/>
+
+      <Map/>
 
       </ScrollView>
     )
@@ -432,9 +433,7 @@ class CreateScreen extends Component {
 }
 
 const createScreen = StyleSheet.create({
-  googleMap:{
-    marginTop:'1000%',
-  }
+
 
 });
 
